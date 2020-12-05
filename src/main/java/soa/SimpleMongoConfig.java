@@ -14,7 +14,13 @@ public class SimpleMongoConfig {
 
     @Bean
     public MongoClient mongo() {
-        ConnectionString connectionString = new ConnectionString("mongodb://root:root@mongodb:27017");
+        String mongoUser = System.getenv("MONGO_INITDB_ROOT_USERNAME");
+        String mongoPassword = System.getenv("MONGO_INITDB_ROOT_PASSWORD");
+        String mongoContainerName = System.getenv("MONGODB_CONTAINER_NAME");
+        String mongoContainerPort = System.getenv("MONGODB_CONTAINER_PORT");
+
+        ConnectionString connectionString = new ConnectionString(
+                "mongodb://" + mongoUser + ":" + mongoPassword + "@" + mongoContainerName + ":" + mongoContainerPort);
         MongoClientSettings mongoClientSettings = MongoClientSettings.builder()
                 .applyConnectionString(connectionString)
                 .build();
